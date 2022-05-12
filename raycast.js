@@ -8,7 +8,8 @@ world.events.tick.subscribe(({ currentTick }) => {
         let p = [...world.getPlayers()];
     let vec = p[0].viewVector;
     let loc = p[0].location;
-    new Ray(9,loc.x,loc.y + 1.62,loc.z,vec.x,vec.y,vec.z);
+    new Ray(9,loc.x,loc.y + 1.62,loc.z,vec.x,vec.y,vec.z,0.524);
+    new Ray(9,loc.x,loc.y + 1.62,loc.z,vec.x,vec.y,vec.z,-0.524);
     }
     for (let prop in raycast) {
        try {over.runCommand(`tp @e[type=map:helper] ${raycast[prop].x} ${raycast[prop].y} ${raycast[prop].z} true`);
@@ -25,8 +26,8 @@ world.events.tick.subscribe(({ currentTick }) => {
     try {over.runCommand(`tp @e[type=map:helper] 0 50 0`)} catch {}
 })
 
-function Ray(timer, x, y, z, tpx, tpy, tpz, n = 1) {
-  let arr = [timer,x,y,z,tpx,tpy,tpz,n];
+function Ray(timer, x, y, z, tpx, tpy, tpz,l = 0, n = 1) {
+  let arr = [timer,x,y,z,tpx,tpy,tpz,l,n];
   if (arr.some(even))
   throw "Ошибка: неверные переменные";
   raycast[id] = {}
@@ -34,6 +35,12 @@ function Ray(timer, x, y, z, tpx, tpy, tpz, n = 1) {
   raycast[id].x = x;
   raycast[id].y = y;
   raycast[id].z = z;
+  if (l) {
+      let proecia = Math.sqrt(tpx**2 + tpz**2);
+      l += tpz >= 0 ? Math.acos(tpx / proecia) : -Math.acos(tpx / proecia);
+      tpx = Math.cos(l)*proecia;
+      tpz = Math.sqrt(proecia**2 - tpx**2);
+  }
   raycast[id].tpx = tpx * n;
   raycast[id].tpy = tpy * n;
   raycast[id].tpz = tpz * n;
