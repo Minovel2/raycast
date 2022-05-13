@@ -39,7 +39,7 @@ function Ray(timer, x, y, z, tpx, tpy, tpz,l = 0, n = 1) {
       let proecia = Math.sqrt(tpx**2 + tpz**2);
       l += tpz >= 0 ? Math.acos(tpx / proecia) : -Math.acos(tpx / proecia);
       tpx = Math.cos(l)*proecia;
-      tpz = Math.sqrt(proecia**2 - tpx**2);
+      tpz = Math.sin(l) < 0 ? -Math.sqrt(proecia**2 - tpx**2) : Math.sqrt(proecia**2 - tpx**2);
   }
   raycast[id].tpx = tpx * n;
   raycast[id].tpy = tpy * n;
